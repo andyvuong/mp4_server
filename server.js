@@ -153,8 +153,32 @@ function updateUser(doc, res, updateParams) {
         findEmailAndUpdate(updateParams.email, doc, res)
     }
     else {
-        saveAndRespond(doc, type + ' was updated.', res);
+        saveAndRespond(doc, 'User was updated.', res);
     }
+}
+
+// updates a task document based on its model (spec)
+function updateTask(doc, res, updateParams) {
+    if (updateParams.name) {
+        doc.name = updateParams.name
+    }
+    if (updateParams.description) {
+        doc.description = updateParams.description;
+    }
+    if (updateParams.deadline) {
+        doc.deadline = updateParams.deadline;
+    }
+    if (updateParams.completed) {
+        doc.completed = updateParams.completed;
+    }
+    if (updateParams.assignedUser) {
+        doc.assignedUser = updateParams.assignedUser;
+    }
+    if (updateParams.assignedUserName) {
+        doc.assignedUserName = updateParams.assignedUserName;
+    }
+    
+    saveAndRespond(doc, 'Task was updated.', res);
 }
 
 // queries the db to see if the email the document is being updated to, already exists. Updates and saves the doc if it doesn't.
@@ -240,16 +264,17 @@ function getDocumentsFromDB(queryOptions, model, res) {
  * @param updateParams - an object containing the document fields to be updated
  */
 function findAndUpdate(model, type, id, res, updateParams) {
-    User.findOne({ '_id': id}, function(err, doc) {
-        if (doc || !err) {
+    model.findOne({ '_id': id}, function(err, doc) {
+        if (doc && !err) {
             if (type === 'User') {
                 updateUser(doc, res, updateParams);
             }
             else if (type === 'Task') {
-
+                updateTask(doc, res, updateParams);
             }
             else {
-
+                res.status(500).json({ message: 'Error occured updating type',
+                                       data: [] });
             }
         }
         else {
@@ -260,14 +285,12 @@ function findAndUpdate(model, type, id, res, updateParams) {
 }
 
 /**
- * Saves a document to the database and updates its date created.
+ * Saves a document to the database.
  * @param doc - the document being saved to the DB
  * @param msg - the response message sent to the client
  * @param res - the response object returned to the client 
  */
 function saveAndRespond(doc, msg, res) {
-    var date = new Date();
-    doc.dateCreated = date.toJSON();
     doc.save();
     res.status(200).json({ message: msg, 
                            data: doc});
@@ -379,7 +402,21 @@ function addTask(name, description, deadline, completed, assignedUser, assignedU
         });
     })
     .put(function(req, res) {
-
+        var id = req.params.id;
+        if (typeof id === 'undefined' || id.length == 0) {
+            return res.status(500).json({ message: 'Validation Error: An id is required.', 
+                                   data: [] });
+        }
+        
+        var updateParam = {
+            name: req.body.name,
+            description: req.body.description,
+            deadline: req.body.deadline,
+            completed: req.body.completed,
+            assignedUser: req.body.assignedUser,
+            assignedUserName: req.body.assignedUserName
+        }
+        findAndUpdate(Task, 'Task', id, res, updateParam);
     })
     .delete(function(req, res) {
         var id = req.params.id;
