@@ -5,7 +5,7 @@ var User = require('./models/user');
 var Task = require('./models/task');
 var bodyParser = require('body-parser');
 var router = express.Router();
-var settings = require('./settings');
+//var settings = require('./settings');
 
 //mongoose.connect('mongodb://' + settings.mlab_user + ':' + settings.mlab_pass + '@ds043002.mlab.com:43002/' +  settings.mlab_db);
 
