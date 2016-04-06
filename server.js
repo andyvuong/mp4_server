@@ -7,8 +7,9 @@ var bodyParser = require('body-parser');
 var router = express.Router();
 var settings = require('./settings');
 
-mongoose.connect('mongodb://' + settings.mlab_user + ':' + settings.mlab_pass + '@ds043002.mlab.com:43002/' +  settings.mlab_db);
+//mongoose.connect('mongodb://' + settings.mlab_user + ':' + settings.mlab_pass + '@ds043002.mlab.com:43002/' +  settings.mlab_db);
 
+mongoose.connect('mongodb://' + 'tester' + ':' + 'test' + '@ds043002.mlab.com:43002/' +  'tasks');
 // Create our Express application
 var app = express();
 
