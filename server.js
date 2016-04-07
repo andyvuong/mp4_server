@@ -108,8 +108,10 @@ var usersParamRoute = router.route('/users/:id')
         else {
             var updateParam = {
                 name: req.body.name,
-                email: req.body.email
+                email: req.body.email,
+                pendingTasks: req.body.pendingTasks
             }
+
             findAndUpdate(User, 'User', id, res, updateParam);
         }
     })
@@ -150,7 +152,11 @@ function updateUser(doc, res, updateParams) {
     if (updateParams.name) {
         doc.name = updateParams.name;
     }
-    if (updateParams.email) {
+    if (updateParams.pendingTasks) {
+        doc.pendingTasks = updateParams.pendingTasks;
+        console.log(doc.pendingTasks);
+    }
+    if (updateParams.email && updateParams.email !== doc.email) {
         findEmailAndUpdate(updateParams.email, doc, res)
     }
     else {
