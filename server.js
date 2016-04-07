@@ -50,7 +50,7 @@ var usersRoute = router.route('/users')
         res.end();
     })
     .get(function(req, res) { // Respond with a List of users
-        queryOptions = parseUserQueryParams(req.query);
+        queryOptions = parseQueryParams(req.query);
 
         getDocumentsFromDB(queryOptions, User, res);
     })
@@ -203,7 +203,7 @@ function findEmailAndUpdate(email, doc, res) {
 }
 
 // Parses the request body for the query parameters and sets the appropriate defaults or client specified parameters encapsulated by an object
-function parseUserQueryParams(reqQuery) {
+function parseQueryParams(reqQuery) {
     var skip = (typeof reqQuery.skip !== 'undefined' && typeof reqQuery.skip !== 'null') ? reqQuery.skip : 0;
     var limit = (typeof reqQuery.limit !== 'undefined' && typeof reqQuery.limit !== 'null') ? reqQuery.limit : 100;
     var count = (typeof reqQuery.count !== 'undefined' && typeof reqQuery.count !== 'null') ? reqQuery.count : false;
@@ -246,10 +246,10 @@ function getDocumentsFromDB(queryOptions, model, res) {
             }
             else {
                 var dataObj = docs;
-                var msg = 'Returning a list of users.'
+                var msg = 'Returning a list of documents.'
                 if (queryOptions.count) {
                     dataObj = docs.length;
-                    msg = 'Returning a count of users'
+                    msg = 'Returning a count of documents'
                 }
                 return res.status(200).json({ message: msg,
                                               data: dataObj,
@@ -363,7 +363,7 @@ function addTask(name, description, deadline, completed, assignedUser, assignedU
         res.end();
     })
     .get(function(req, res) {
-        queryOptions = parseUserQueryParams(req.query);
+        queryOptions = parseQueryParams(req.query);
 
         getDocumentsFromDB(queryOptions, Task, res);
     })
