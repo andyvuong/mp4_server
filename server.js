@@ -314,9 +314,16 @@ function saveAndRespond(doc, msg, res) {
 function findAndDelete(model, type, id, res) {
     model.findOne({'_id': id}, function(err, doc) {
         if (doc) {
-            doc.remove();
-            res.status(200).json({ message: 'Deleted ' + type + '.',
+            doc.remove(function(err) {
+                if (err) {
+                    res.status(500).json({ message: 'could not delete: ' + err, 
+                                   data: [] });     
+                }
+                else {
+                    res.status(200).json({ message: 'Deleted ' + type + '.',
                                    data: [] });
+                }
+            });
         }
         else {
             res.status(404).json({ message: 'Error: ' +  type + ' was not found.', 
