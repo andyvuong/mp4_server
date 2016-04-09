@@ -155,7 +155,6 @@ function updateUser(doc, res, updateParams) {
     }
     if (updateParams.pendingTasks) {
         doc.pendingTasks = updateParams.pendingTasks;
-        console.log(doc.pendingTasks);
     }
     if (updateParams.email && updateParams.email !== doc.email) {
         findEmailAndUpdate(updateParams.email, doc, res)
