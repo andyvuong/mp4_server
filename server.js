@@ -156,7 +156,6 @@ function updateUser(doc, res, updateParams) {
         doc.name = updateParams.name;
     }
     if (updateParams.pendingTasks) {
-        console.log('original ' + doc.pendingTasks + ' updated to ' + updateParams.pendingTasks)
         doc.pendingTasks = updateParams.pendingTasks;
     }
     if (updateParams.email && updateParams.email !== doc.email) {
@@ -342,7 +341,8 @@ function addTask(name, description, deadline, completed, assignedUser, assignedU
     task.deadline = deadline;
 
     task.description = (typeof description !== 'undefined') ? description : '';
-    task.completed = (typeof completed !== 'undefined' && completed === true) ? true : false;
+    task.completed = (typeof completed !== 'undefined' && (completed === true || completed === 'true')) ? true : false;
+    //console.log('is actually ' + task.completed); // test the 498 helper script
     task.assignedUser = (typeof assignedUser !== 'undefined') ? assignedUser : '';
     task.assignedUserName = (typeof assignedUserName !== 'undefined') ? assignedUserName : 'unassigned';
 
