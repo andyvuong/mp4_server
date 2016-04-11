@@ -30,6 +30,8 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+app.use(bodyParser.json());
+
 // Specifies the middleware to use at the specified route
 app.use('/api', router);
 
@@ -60,7 +62,7 @@ var usersRoute = router.route('/users')
         var email = req.body.email;
         // simple email format validation handled on frontend
         if (name == null || email == null || name.length == 0 || email.length == 0) {
-            return res.status(500).json({ message: 'Validation Error: A name and email is required.', 
+            return res.status(500).json({ message: 'Validation Error: A valid name and email is required.', 
                                           data: [] });
         }
         // check if email already exists before inserting into db.
@@ -154,6 +156,7 @@ function updateUser(doc, res, updateParams) {
         doc.name = updateParams.name;
     }
     if (updateParams.pendingTasks) {
+        console.log('original ' + doc.pendingTasks + ' updated to ' + updateParams.pendingTasks)
         doc.pendingTasks = updateParams.pendingTasks;
     }
     if (updateParams.email && updateParams.email !== doc.email) {
@@ -175,7 +178,7 @@ function updateTask(doc, res, updateParams) {
     if (updateParams.deadline) {
         doc.deadline = updateParams.deadline;
     }
-    if (updateParams.completed) {
+    if (typeof updateParams.completed !== 'undefined') {
         doc.completed = updateParams.completed;
     }
     if (updateParams.assignedUser) {
