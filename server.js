@@ -180,7 +180,7 @@ function updateTask(doc, res, updateParams) {
     if (typeof updateParams.completed !== 'undefined') {
         doc.completed = updateParams.completed;
     }
-    if (updateParams.assignedUser) {
+    if (updateParams.assignedUser || updateParams.assignedUser !== 'undefined') {
         doc.assignedUser = updateParams.assignedUser;
     }
     if (updateParams.assignedUserName) {
