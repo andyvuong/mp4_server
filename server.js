@@ -385,7 +385,7 @@ function addTask(name, description, deadline, completed, assignedUser, assignedU
         var assignedUser = req.body.assignedUser;
         var assignedUserName = req.body.assignedUserName;
 
-        if (typeof name == 'undefined' || typeof deadline == 'undefined') {
+        if (typeof name === 'undefined' || typeof deadline === 'undefined') {
             return res.status(500).json({ message: 'Validation Error: A name and deadline for this task is required.', 
                                           data: [] });
         }
