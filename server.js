@@ -108,6 +108,10 @@ var usersParamRoute = router.route('/users/:id')
             res.status(500).json({ message: 'Validation Error: An id is required.', 
                                    data: [] });
         }
+        else if (typeof req.body.name === 'undefined' || typeof req.body.email === 'undefined') {
+            res.status(500).json({ message: 'Validation Error: A valid name and email is required.', 
+                                   data: [] });
+        }
         else {
             var updateParam = {
                 name: req.body.name,
@@ -422,6 +426,10 @@ function addTask(name, description, deadline, completed, assignedUser, assignedU
         var id = req.params.id;
         if (typeof id === 'undefined' || id.length == 0) {
             return res.status(500).json({ message: 'Validation Error: An id is required.', 
+                                   data: [] });
+        }
+        if (typeof req.body.name === 'undefined' || typeof req.body.deadline === 'undefined') {
+            return res.status(500).json({ message: 'Validation Error: A valid name and deadline is required.', 
                                    data: [] });
         }
         
